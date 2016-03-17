@@ -223,17 +223,17 @@ e.events(a,b),
 // Activate 1st slide
 e.go(b.current,a,b),
 // Start autoplay
-e.updateinterval(a,b)},this.each(e.init)},b.jSocial=function(b){var c=jQuery.extend({showshare:!0,showfollow:!0,bclass:"social",share:{facebook:{enable:!0,title:"Facebook",url:"http://facebook.com/sharer/sharer.php?u="},google:{enable:!0,title:"Google",url:"http://plus.google.com/share?url="},twitter:{enable:!0,title:"Twitter",url:"https://twitter.com/intent/tweet?url="},linkedin:{enable:!0,title:"LinkedIn",url:"http://linkedin.com/shareArticle?url="},pinterest:{enable:!0,title:"Pinterest",url:"http://pinterest.com/pin/create/bookmarklet/?url="},reddit:{enable:!0,title:"Reddit",url:"http://reddit.com/submit?url="}},follow:{facebook:{enable:!0,title:"Facebook",url:"https://facebook.com"},google:{enable:!0,title:"Google",url:"https://google.com"},twitter:{enable:!0,title:"Twitter",url:"https://twitter.com"},linkedin:{enable:!0,title:"LinkedIn",url:"https://linkedin.com"},pinterest:{enable:!0,title:"Pinterest",url:"https://pinterest.com"},yelp:{enable:!0,title:"Yelp",url:"https://yelp.com"}}},b),d={};/**
-* Generate markup for controls & other elements.
+e.updateinterval(a,b)},this.each(e.init)},b.jSocial=function(b){var c=document.title,d=a("link[rel='canonical']")?a("link[rel='canonical']").attr("href"):window.location,e=jQuery.extend({showshare:!0,showfollow:!0,sharetitle:"Share this page",followtitle:"Follow Us",buttonclass:"social",share:["facebook","digg","google","twitter","linkedin","pinterest","reddit","stumbleupon","tumblr"],sharelinks:{facebook:{title:"Facebook",url:"http://facebook.com/sharer/sharer.php?u="+d},digg:{title:"Digg",url:"http://digg.com/submit?url="+d+"&title="+c},google:{title:"Google",url:"https://plus.google.com/share?url="+d},twitter:{title:"Twitter",url:"https://twitter.com/intent/tweet?url="+d+"&text="+c},linkedin:{title:"LinkedIn",url:"http://linkedin.com/shareArticle?url="+d+"&title="+c},pinterest:{title:"Pinterest",url:"http://pinterest.com/pin/create/bookmarklet/?url="+d+"&description="+c},reddit:{title:"Reddit",url:"http://reddit.com/submit?url="+d+"&title="+c},stumbleupon:{title:"StumbleUpon",url:"http://www.stumbleupon.com/submit?url="+d+"&title="+c},tumblr:{title:"Tumblr",url:"https://www.tumblr.com/widgets/share/tool?canonicalUrl="+d+"&title="+c}},follow:{facebook:{title:"Facebook",url:"https://facebook.com"},google:{title:"Google",url:"https://plus.google.com"},twitter:{title:"Twitter",url:"https://twitter.com"},linkedin:{title:"LinkedIn",url:"https://linkedin.com"},pinterest:{title:"Pinterest",url:"https://pinterest.com"},yelp:{title:"Yelp",url:"https://yelp.com"}}},b),f={};/**
+* Generate markup for buttons.
 *
 * @param object $obj
 */
 /**
-* Init jAccordion
+* Init jSocial
 */
-return d.style=function(b){b.once("jSocial",function(){if(c.showshare){var d=a('<div class="jSocial-share" />');a.each(c.share,function(){this.enable&&(console.log(this),d.buttonize(this.url+window.location,this.title,[this.title.toLowerCase(),c.bclass,"icon"]))}),b.append(d)}if(c.showfollow){var e=a('<div class="jSocial-follow" />');a.each(c.follow,function(){this.enable&&(console.log(this),e.buttonize(this.url,this.title,[this.title.toLowerCase(),c.bclass,"icon"]))}),b.append(e)}})},d.init=function(){var a=jQuery(this);
-// Generate markup for accordion
-d.style(a)},this.each(d.init)},/**
+return f.style=function(b){b.once("jSocial",function(){if(e.showshare){var c=a('<div class="jSocial-share" />');0!==e.sharetitle.length&&c.append("<h3>"+e.sharetitle+"</h3>"),e.share.map(function(a){c.buttonize(e.sharelinks[a].url,e.sharetitle+" on "+e.sharelinks[a].title,[e.sharelinks[a].title.toLowerCase(),e.buttonclass,"icon"])}),b.append(c)}if(e.showfollow){var d=a('<div class="jSocial-follow" />');0!==e.followtitle.length&&d.append("<h3>"+e.followtitle+"</h3>"),a.each(e.follow,function(){d.buttonize(this.url,e.followtitle+" on "+this.title,[this.title.replace(/ /g,"").toLowerCase(),e.buttonclass,"icon"])}),b.append(d)}})},f.init=function(){
+// Generate markup for links.
+f.style(jQuery(this))},this.each(f.init)},/**
 * jTabs : Tabify a list of content
 */
 b.jTabs=function(a){var c=jQuery.extend({active:0,// Array index of initially active tab

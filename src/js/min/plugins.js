@@ -2,7 +2,7 @@
  * @file
  * Call javascript plugins used in theme.
  */
-!function(a){var b={cellularui:{jAccordion:!0,jBlocklink:!0,jMmenu:!0,jTabs:!0,jScrolli:!0},backstretch:!1,flowtype:!1,freetile:!1,parallax:!1,smoove:!1};
+!function(a){var b={cellularui:{jAccordion:!0,jBlocklink:!0,jMmenu:!0,jTabs:!0,jScrolli:!0,jSocial:!0},backstretch:!1,flowtype:!1,freetile:!1,parallax:!1,smoove:!1};
 // CellularUI functions.
 b.cellularui.jAccordion===!0&&a(".jAccordion").jAccordion({duration:500,// Duration of transition.
 easing:"swing",// Type of easing.
@@ -14,7 +14,7 @@ cclass:"jMmenu",// default
 // <element class="$type-$direction">
 type:"push",direction:"down"}),b.cellularui.jTabs===!0&&(a(".jTabs").jTabs({active:0,// Array index of initially active content.
 orient:"horizontal"}),a(".jTabs-vertical").jTabs({active:0,// Array index of initially active content.
-orient:"vertical"})),b.cellularui.jScrolli===!0&&a(".jScrolli").jScrolli(),
+orient:"vertical"})),b.cellularui.jScrolli===!0&&a(".jScrolli").jScrolli(),b.cellularui.jSocial===!0&&a(".jSocial").jSocial({showshare:!0,showfollow:!0,sharetitle:"Share this page",followtitle:"Follow Us",buttonclass:"social",share:["facebook","digg","google","twitter","linkedin","pinterest","reddit","stumbleupon","tumblr"],follow:{facebook:{title:"Facebook",url:"https://facebook.com"},google:{title:"Google",url:"https://plus.google.com"},linkedin:{title:"LinkedIn",url:"https://linkedin.com"},twitter:{title:"Twitter",url:"https://twitter.com"},yelp:{title:"Yelp",url:"https://yelp.com"}}}),
 // Backstretch functions.
 b.backstretch===!0&&a.backstretch(["http://lorempixel.com/800/600/abstract/1","http://lorempixel.com/800/600/abstract/2","http://lorempixel.com/800/600/abstract/3"],{duration:3e3,fade:750}),
 // Flowtype functions.
