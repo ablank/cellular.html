@@ -1,0 +1,21 @@
+default:
+    - 'clean'
+    - 'concat'
+    - 'compass'
+    - 'autoprefixer'
+    - 'csscomb'
+    - 'cssmin'
+    - 'jshint:js'
+    - 'uglify'
+    - 'newer:svg2png'
+    - 'newer:imagemin'
+dev:
+    - 'concat'
+    - 'compass'
+    - 'uglify'
+    - 'jshint:js'
+style:
+    - 'compass'
+    - 'autoprefixer'
+    - 'csscomb'
+    - 'cssmin'

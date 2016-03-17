@@ -1,0 +1,67 @@
+/**
+  * @file
+  * CellularUI : window scrolled styling
+*/
+$scroll_header : $header_height / 2;
+
+.scrolled {
+
+  #header {
+    height: $scroll_header;
+
+    .logo {
+      padding: 0;
+
+      a{
+        width: $scroll_header;
+        height: $scroll_header;
+        background-size:  $scroll_header;
+      }
+    }
+  }
+
+  #nav {
+    top: 0;
+    height: $scroll_header;
+  }
+
+  &.jMmenu-inactive,
+  &.jMmenu-active {
+
+    #nav {
+      // Element, used as the menu trigger.
+      width: $scroll_header - 2px;
+      height: $scroll_header - 2px;
+      background-size: ($scroll_header - 2px) * 3;
+      border: 1px solid $border_color;
+    }
+
+    .jMmenu.menu {
+      top: $scroll_header;
+
+      ul {
+        margin: 0 0 0 .4em;
+      }
+
+      li {
+        margin: 0.2em auto;
+      }
+
+      a,
+      a:visited {
+        height: 1em;
+        padding: .6em 1em .8em;
+        font-size: .9em;
+      }
+    }
+
+    // Styling common to top navigation.
+    &.push-down,
+    &.slide-down {
+      .menu.jMmenu {
+        top: $scroll_header;
+        bottom: $scroll_header;
+      }
+    }
+  }
+}
