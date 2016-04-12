@@ -9,8 +9,7 @@
   left: 5%;
   padding: $logo_pad;
   z-index: 9;
-  @include transition-duration(300ms);
-  @include transition();
+  transition: width,height,padding 200ms;
 
   a {
     // Logo link to frontpage.
@@ -23,8 +22,8 @@
     background-repeat: no-repeat;
     border: none;
     text-decoration: none;
+    transition: width,height,padding 300ms ease-in-out;
     @include box-shadow(0 0 0 0 $white);
-    @include transition();
 
     &:hover {
       @include box-shadow(0 0 .4em 0 $hilight);

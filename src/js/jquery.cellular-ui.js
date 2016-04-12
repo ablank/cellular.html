@@ -22,6 +22,19 @@ scrolltimer: 0
 * Cellular utility functions
 */
 /**
+* Auto invoke
+*/
+(function () {
+// Scroll to page anchors.
+jQuery('a[href^="#"]').on('click', function (e) {
+var target = jQuery(this).attr('href');
+e.preventDefault();
+jQuery('html, body').stop().animate({
+scrollTop: jQuery(target).offset().top
+}, 1500);
+});
+})();
+/**
 * Get the breakpoints specified in CSS
 */
 cellular.breakpoint = function () {
@@ -114,48 +127,6 @@ return transitions[t];
 }
 };
 /**
-* Set state on window resize
-*/
-cellular.windowstate = cellular.debounce(function () {
-var ob = cellular.state.breakpoint;
-cellular.state.breakpoint = cellular.breakpoint().type;
-jQuery('body').removeClass(ob)
-.addClass(cellular.state.breakpoint);
-}, 500);
-/**
-* Set state on document scroll
-*/
-cellular.scrollstate = cellular.debounce(function (e, y) {
-var el = jQuery('body'),
-cclass = 'scrolled',
-uc = cclass + '-up',
-dc = cclass + '-down',
-//y = cellular.state.scrolltop,
-scrolltimeout = null;
-cellular.state.scrolltop = $(document).scrollTop();
-cellular.scrolltimer(el, uc, dc);
-// Detect if page is scrolled
-if (cellular.state.scrolltop < 5) {
-el.removeClass(cclass);
-} else {
-el.addClass(cclass);
-}
-/*
-// Detect scroll direction
-if (cellular.state.scrolltop > y) { // scroll down
-if (!el.hasClass(dc)) {
-el.removeClass(uc)
-.addClass(dc);
-}
-} else if (cellular.state.scrolltop < y) { // scroll up
-if (!el.hasClass(uc)) {
-el.removeClass(dc)
-.addClass(uc);
-}
-}
-*/
-}, 0, true);
-/**
 * Reset scroll timer
 */
 cellular.scrolltimer = function (el, uc, dc) {
@@ -164,19 +135,6 @@ cellular.state.scrolltimer = window.setTimeout(function () {
 el.removeClass(uc + ' ' + dc);
 }, 2000);
 };
-/*
-cellular.autodimension = function ($obj, dimension) {
-return this.each(function () {
-var $t = jQuery(this),
-max = 0;
-if ($obj === 'auto') {
-$t.height(state.maxheight);
-} else {
-$t.height(o.size.height);
-}
-});
-};
-*/
 /**
 *
 * @param {string} href
@@ -192,13 +150,56 @@ var btn = $('<a />')
 .classify(classes);
 return $(this).append(btn);
 };
+/**
+* Set state on window resize
+*/
+cellular.windowstate = cellular.debounce(function () {
+var ob = cellular.state.breakpoint;
+cellular.state.breakpoint = cellular.breakpoint().type;
+jQuery('body').removeClass(ob)
+.addClass(cellular.state.breakpoint);
+}, 100);
+/**
+* Set state on document scroll
+*/
+cellular.scrollstate = cellular.debounce(function (e, y) {
+var el = jQuery('body'),
+cclass = 'scrolled',
+uc = cclass + '-up',
+dc = cclass + '-down',
+//y = cellular.state.scrolltop,
+scrolltimeout = null;
+cellular.state.scrolltop = $(document).scrollTop();
+el.attr('data-scrolltop', cellular.state.scrolltop);
+// Detect if page is scrolled
+if (cellular.state.scrolltop < 10) {
+el.removeClass(cclass);
+} else {
+el.addClass(cclass);
+}
+/*
+cellular.scrolltimer(el, uc, dc);
+// Detect scroll direction
+if (cellular.state.scrolltop > y) { // scroll down
+if (!el.hasClass(dc)) {
+el.removeClass(uc)
+.addClass(dc);
+}
+} else if (cellular.state.scrolltop < y) { // scroll up
+if (!el.hasClass(uc)) {
+el.removeClass(dc)
+.addClass(uc);
+}
+}
+*/
+}, 0, true);
 (function state() {
 // Get initial state
 cellular.windowstate();
 cellular.scrollstate();
 // Update state on user interaction
-$(window).on('resize', cellular.windowstate);
-$(document).on('scroll', cellular.scrollstate);
+jQuery(window).on('resize', cellular.windowstate);
+jQuery(document).on('scroll', cellular.scrollstate);
 })();
 cellular.jAccordion = function (opts) {
 var o = jQuery.extend({
@@ -233,8 +234,7 @@ li.toggleClass(cellular.opts.activeclass)
 */
 fn.style = function ($obj) {
 $obj.once('jAccordion', function () {
-$obj.addClass(cellular.opts.cclass)
-.find('> li').each(function () {
+$obj.find('> li').each(function () {
 var li = jQuery(this);
 li.kidWrap();
 li.children().eq(0).addClass('title');
@@ -259,9 +259,9 @@ fn.showContent($obj.children().eq(o.active));
 };
 return this.each(fn.init);
 };
-cellular.jBlocklink = function (opts) {
+cellular.jCard = function (opts) {
 var o = jQuery.extend({
-cclass: "jBlocklink-link"
+cclass: "jCard"
 }, opts),
 fn = {};
 fn.init = function () {
@@ -270,14 +270,12 @@ $obj.once(o.cclass, function () {
 var a1 = $obj.find('a').eq(0);
 var href = a1.attr('href');
 if (href !== undefined) {
-var blink = jQuery('<a href="' + href + '" />');
-blink.classify([
-cellular.opts.cclass,
-o.cclass,
+var wrapperlink = jQuery('<a href="' + href + '" />').classify([
+o.cclass + '-wrap',
 a1.attr('class') ? a1.attr('class') : null
 ]);
 // .data(a.data());
-$obj.wrap(blink)
+$obj.wrap(wrapperlink)
 .find('h2, h3').addClass('title');
 }
 });
@@ -290,32 +288,6 @@ jQuery(this).deactivate();
 return this.each(fn.init);
 };
 /**
-* jEqualheight: Set children to equal height
-*/
-cellular.jEqualheight = function (opts) {
-/*
-var array = [267, 306, 108];
-var largest = Math.max.apply(Math, array); // 306
-*/
-var o = jQuery.extend({
-//"opt": val
-}, opts),
-fn = {};
-fn.init = function () {
-var $obj = jQuery(this),
-kids = $obj.find('>*'),
-maxHeight = 0;
-kids.each(function () {
-$t = jQuery(this);
-if ($t.height() > maxHeight) {
-maxHeight = $t.height();
-}
-$t.height(maxHeight);
-});
-};
-return this.each(fn.init);
-};
-/**
 * jMmenu: Hamburger menu for mobile devices
 */
 cellular.jMmenu = function (opts) {
@@ -323,34 +295,59 @@ var o = jQuery.extend({
 breakpoint: cellular.opts.breakpoint, // Window breakpoint trigger: 'mobile', 'narrow', 'default', 'large'
 parent: jQuery('body'), // Parent element used to attach menu
 cclass: "jMmenu", // Menu class to test
-type: "slide", // Type of animation
-direction: "right" // Direction of animation
+triggertext: "Menu",
+animateclass: "slide-right", // Type of animation
+throttle: 101 // Time in ms to throttle window resize event
 }, opts),
 fn = {};
 fn.mediaQuery = cellular.debounce(function ($obj, state) {
 if (o.breakpoint === cellular.state.breakpoint) {
-var $menu = $obj.children([0]);
+var $menu = $obj.children([0]),
+label = null;
 state.mmenu = true;
-o.parent.addClass(o.type + '-' + o.direction);
-$menu.addClass(o.cclass)
-.prependTo(o.parent);
-fn.trigger($obj, state);
+o.parent.addClass(o.animateclass);
+if (o.triggertext) {
+label = '<span class="' + o.cclass + '-triggertext">' + o.triggertext + '</span>';
 }
-}, 500);
+$obj.addClass(o.cclass + '-trigger')
+.append(label);
+$menu.addClass(o.cclass + '-menu')
+.prependTo(o.parent);
+} else {
+state.mmenu = false;
+state.active = false;
+o.parent.removeClass(
+o.cclass + '-active ' +
+o.cclass + '-inactive ' +
+o.animateclass
+);
+$obj.attr('aria-label', "Menu")
+.removeClass(o.cclass + '-trigger');
+jQuery('.' + o.cclass + '-menu').removeClass(o.cclass + '-menu')
+.prependTo($obj);
+jQuery('.' + o.cclass + '-triggertext').remove();
+}
+fn.trigger($obj, state);
+}, o.throttle);
 fn.trigger = function ($obj, state) {
 var classes = [
 o.cclass + '-active',
 o.cclass + '-inactive'
 ];
 if (state.active) {
-$obj.activate();
+$obj.activate()
+.attr('aria-label', "Close Menu");
+jQuery('.' + o.cclass + '-menu').addClass('active');
 o.parent.addClass(classes[0])
 .removeClass(classes[1]);
-}
-else {
-$obj.deactivate();
+} else {
+$obj.deactivate()
+.attr('aria-label', "Open Menu");
+jQuery('.' + o.cclass + '-menu').removeClass('active');
+if (state.mmenu) {
 o.parent.addClass(classes[1])
 .removeClass(classes[0]);
+}
 }
 };
 fn.init = function () {
@@ -364,11 +361,62 @@ jQuery(window).on('resize', function () {
 fn.mediaQuery($obj, state);
 });
 $obj.on('click', function () {
+//console.log(this);
 if (state.mmenu) {
 state.active = state.active ? false : true;
 fn.trigger($obj, state);
 }
 });
+jQuery(document).on('keyup', function (e) {
+if (state.active === true && e.which === 27) {
+e.preventDefault();
+state.active = false;
+fn.trigger($obj, state);
+}
+});
+};
+return this.each(fn.init);
+};
+cellular.jModal = function (opts) {
+var o = jQuery.extend({
+cclass: "jModal"
+}, opts),
+fn = {};
+/**
+* The <li> object to show.
+*
+* @param object li
+*  $('<li>')
+*/
+fn.trigger = function (data) {
+var overlay = jQuery('.' + o.cclass + '-overlay'),
+modal = jQuery('<div class="' + o.cclass + '-window">')
+.append('<span class="control close" aria-label="Close" />');
+};
+/**
+* Generate markup for controls & other elements.
+*
+* @param object $obj
+*/
+fn.style = function ($obj) {
+$jQuery.once('jModal', function () {
+var overlay = jQuery('<div class="' + o.cclass + '-overlay">')
+.append('<div class="' + o.cclass + '-window" />')
+.append('<span class="control close" aria-label="Close" />');
+jQuery('body').append(overlay);
+});
+};
+/**
+* Init jModal
+*/
+fn.init = function () {
+var $obj = jQuery(this),
+state = {
+active: false
+};
+// Generate markup for modal
+fn.style($obj);
+fn.events($obj, state);
 };
 return this.each(fn.init);
 };
@@ -404,7 +452,7 @@ pause: 5 // Time (seconds) to pause between slides.
 caption: {
 enable: true,
 autohide: false,
-selector: ".caption" // 'auto' or '.selector' used to generate caption
+selector: "p" // 'auto' or '.selector' used to generate caption
 }
 }, opts),
 fn = {};
@@ -452,7 +500,7 @@ jQuery(li[state.next]).activate('next');
 jQuery(li[index]).activate();
 // Listen for transition to complete & update classes
 $obj.parent().addClass(tclass)
-.one(cellular.transitionend(), function () {
+.on(cellular.transitionend(), function () {
 jQuery(this).removeClass(tclass);
 });
 // Update the marker
@@ -484,9 +532,14 @@ var wrap = $obj.parent().parent(),
 cap = wrap.find('> .caption p');
 // Get current slide's caption
 state.caption = wrap.find(o.caption.selector).eq(state.current).text();
+cap.on(cellular.transitionend(), function () {
 // Update the active caption
-cap.text(state.caption);
+$(this).text(state.caption);
+});
 };
+/**
+* Reset autoplay timer.
+*/
 fn.updateinterval = function ($obj, state) {
 if (o.controls.autoplay && !state.paused) {
 clearInterval(state.interval);
@@ -573,7 +626,6 @@ wrap.deactivate();
 // Keyboard
 if (o.controls.keyboard) {
 jQuery(document).on('keyup', function (e) {
-// console.log(e.which);
 var keys = [
 37, // left
 39 // right
@@ -664,10 +716,10 @@ fn.go(state.current, $obj, state);
 * @param object state
 */
 fn.setheight = function ($obj, state) {
-jQuery(window).on('load', function () {
+jQuery(document).ready(function () {
 if (o.height === 'auto') {
-$obj.find('.content').each(function () {
-var tHeight = jQuery(this).height();
+$obj.find('> li').each(function () {
+var tHeight = this.clientHeight;
 if (tHeight > state.maxheight) {
 state.maxheight = tHeight;
 }
@@ -702,14 +754,6 @@ $obj.after(markers);
 fn.mark($obj, state);
 }
 if (o.caption.enable) {
-/*
-if (o.caption.selector === 'auto') {
-// o.caption.selector = what?
-}
-else {
-$obj.find(o.caption.selector).hide();
-}
-*/
 $obj.find(o.caption.selector).hide();
 $obj.after('<div class="caption"><p/></div>');
 }
@@ -720,7 +764,7 @@ fn.button(o.controls.text.prev),
 fn.button(o.controls.text.next)
 //o.autoplay ? fn.button(o.controls.text.pause) : null
 ];
-for (ij = 0; j < controls.length; j += 1) {
+for (j = 0; j < controls.length; j += 1) {
 $obj.parent().prepend(controls[j]);
 }
 }
@@ -761,7 +805,7 @@ var tit = document.title,
 page = $("link[rel='canonical']") ? $("link[rel='canonical']").attr('href') : window.location;
 var o = jQuery.extend({
 showshare: true,
-showfollow: true,
+showfollow: false,
 sharetitle: "Share this page",
 followtitle: "Follow Us",
 buttonclass: "social",
@@ -850,22 +894,34 @@ fn = {};
 fn.style = function ($obj) {
 $obj.once('jSocial', function () {
 if (o.showshare) {
-var sWrap = $('<div class="jSocial-share" />');
+var sWrap = $('<div class="jSocial-share" />'),
+sharetitle = '';
 if (o.sharetitle.length !== 0) {
-sWrap.append('<h3>' + o.sharetitle + '</h3>');
+sWrap.append('<span class="title">' + o.sharetitle + '</span>');
+sharetitle = o.sharetitle + ' on ';
 }
 o.share.map(function (i) {
-sWrap.buttonize(o.sharelinks[i].url, o.sharetitle + ' on ' + o.sharelinks[i].title, [o.sharelinks[i].title.toLowerCase(), o.buttonclass, 'icon']);
+sWrap.buttonize(o.sharelinks[i].url, sharetitle + o.sharelinks[i].title, [
+o.sharelinks[i].title.toLowerCase(),
+o.buttonclass,
+'icon'
+]);
 });
 $obj.append(sWrap);
 }
 if (o.showfollow) {
-var fWrap = $('<div class="jSocial-follow" />');
+var fWrap = $('<div class="jSocial-follow" />'),
+followtitle = '';
 if (o.followtitle.length !== 0) {
-fWrap.append('<h3>' + o.followtitle + '</h3>');
+fWrap.append('<span class="title">' + o.followtitle + '</span>');
+followtitle = o.followtitle + ' on ';
 }
 $.each(o.follow, function () {
-fWrap.buttonize(this.url, o.followtitle + ' on ' + this.title, [this.title.replace(/ /g, '').toLowerCase(), o.buttonclass, 'icon']);
+fWrap.buttonize(this.url, followtitle + this.title, [
+this.title.replace(/ /g, '').toLowerCase(),
+o.buttonclass,
+'icon'
+]);
 });
 $obj.append(fWrap);
 }
@@ -897,11 +953,11 @@ fn = {};
 * @param object li
 */
 fn.showContent = function ($obj, li) {
-var c = li.find('.content'),
+var content = li.find('.content'),
 pan = $obj.parent().find('.panel-content');
 li.activate();
 pan.fadeOut('normal', function () {
-jQuery(this).html(c.html())
+jQuery(this).html(content.html())
 .fadeIn('normal');
 });
 };
@@ -912,7 +968,6 @@ fn.init = function () {
 var $obj = jQuery(this),
 tab = $obj.find('> li'),
 wrap = jQuery('<div/>').classify([
-cellular.opts.cclass,
 o.orient,
 o.cclass + '-wrap'
 ]),
@@ -941,6 +996,139 @@ fn.showContent($obj, li);
 });
 //Set default content
 fn.showContent($obj, tab.eq([o.active]));
+};
+return this.each(fn.init);
+};
+cellular.jTooltip = function (opts) {
+var o = jQuery.extend({
+trigger: 'jTooltip-trigger', // Class used to trigger tooltip.
+triggerbtn: 'jTooltip-trigger-btn', // OR false, used to trigger tooltip
+triggerbtntext: 'About this',
+cclass: 'jTooltip-tooltip',
+dataattr: 'data-tooltip',
+bindto: 'btn', // OR 'event' OR {}
+wrap: true,
+offsetX: 10,
+offsetY: 5
+}, opts),
+fn = {};
+/**
+* Generate markup for buttons.
+*
+* @param object $obj
+*/
+fn.style = function ($obj, callback) {
+var tooltip = jQuery('<div>' + $obj.attr(o.dataattr) + '</div>');
+if (o.wrap) {
+$obj.wrap('<div class="' + o.cclass + '-wrap" />');
+}
+tooltip.classify([o.cclass]);
+$obj.after(tooltip);
+if (o.triggerbtn !== false) {
+var btn = jQuery('<span aria-label="' + o.triggerbtntext + '" />');
+btn.classify([o.trigger, o.triggerbtn])
+.prop('tabindex', $obj.prop('tabindex'));
+$obj.before(btn);
+} else {
+$obj.addClass(o.trigger);
+}
+callback($obj);
+};
+fn.events = function ($obj) {
+jQuery('.' + o.trigger).on('mouseenter focus', function (e) {
+var $t = jQuery(this),
+tooltip = $t.nextAll('.' + o.cclass + ':first'),
+btn = {},
+position = {};
+switch (o.bindto) {
+case 'event':
+position = {
+'top': (parseInt(e.clientY) + o.offsetY) + 'px',
+'left': (parseInt(e.clientX) + o.offsetX) + 'px'
+};
+break;
+case 'btn':
+btn = this.getBoundingClientRect();
+position = {
+'top': (btn.top + ($t.height() / 2) + o.offsetY) + 'px',
+'left': (btn.left + $t.width() + o.offsetX) + 'px'
+};
+break;
+default:
+case {}:
+btn = {}.getBoundingClientRect();
+position = {
+'top': (btn.top + ($t.height() / 2) + o.offsetY) + 'px',
+'left': (btn.left + ($t.width() / 2) + o.offsetX) + 'px'
+};
+break;
+}
+tooltip.css(position)
+.activate();
+})
+.on('mouseleave blur', function (e) {
+jQuery(this).nextAll('.' + o.cclass + ':first').deactivate();
+});
+};
+/**
+* Init jSocial
+*/
+fn.init = function () {
+fn.style(jQuery(this), fn.events);
+};
+return this.each(fn.init);
+};
+cellular.jZoom = function(opts) {
+var o = jQuery.extend({
+cclass: "jZoom",
+trigger: "jZoom",
+offsetX: "1em",
+offsetY: "1em",
+}, opts),
+fn = {};
+fn.showZoom = function($obj) {
+};
+fn.closeZoom = function() {
+};
+fn.updateZoom = function($obj) {
+var imgx = $obj.prop('x');
+var imgy = $obj.prop('y');
+console.log(imgy);
+};
+fn.style = function($obj) {
+$obj.once(o.cclass, function() {
+jQuery(this).wrap('<span class="' + o.cclass + '-wrap" />')
+.after('<span class="' + o.cclass + '-trigger">Zoom Image</span>')
+.after('<span class="' + o.cclass + '-window">');
+});
+};
+/**
+*
+*
+* @param object $obj
+*/
+fn.events = function($obj) {
+var $zwin = $obj.parent().find('.' + o.cclass + '-window');
+$obj.on('click', function(e) {
+e.preventDefault();
+$zwin.activate();
+});
+$zwin.on('mouseleave blur', function() {
+$zwin.deactivate();
+});
+$zwin.on('mousedown', fn.updateZoom($obj));
+};
+/**
+* Init jTabs
+*/
+fn.init = function() {
+var $obj = jQuery(this),
+state = {
+active: false
+};
+fn.style($obj);
+//Set default content
+fn.events($obj);
 };
 return this.each(fn.init);
 };

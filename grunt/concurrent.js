@@ -4,9 +4,9 @@
  */
 
 module.exports = {
-    // Prep files for further processing.
-    prep: [
-        'concat',
-        'compass'
-    ]
+  // Prep files for further processing.
+  prep: [
+    'concat',
+    'compass'
+  ]
 };

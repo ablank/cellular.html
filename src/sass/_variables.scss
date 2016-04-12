@@ -47,7 +47,7 @@ $header_height: $logo_height + ($logo_pad * 2);
 $body_img: url('../assets/images/honeycomb_light.png');
 
 // Typography
-$p_font: 'SegoeUI, "Helvetica Neue", Helvetica, Arial, Roboto, sans-serif';
+$p_font: SegoeUI, "Helvetica Neue", Helvetica, Arial, Roboto;
 $p_size: $normal;
 $p_line_height: $big;
 $p_max_width: 32em;

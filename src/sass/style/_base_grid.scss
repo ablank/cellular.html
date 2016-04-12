@@ -2,6 +2,7 @@
   * @file
   * Cellular Grid
 */
+
 //////
 // Grid Cells
 /////
@@ -26,9 +27,7 @@
   width: 100%;
   @if($cell_margin > 0) {margin: 0;}
   @if($cell_padding > 0) {padding: 0;}
-  @if($flexbox != true) {
-    @include clearfix();
-  }
+  @include clearfix();
 }
 
 @if($flexbox) {

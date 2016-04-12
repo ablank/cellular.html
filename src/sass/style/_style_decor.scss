@@ -3,21 +3,6 @@
   * Misc. class styles
 */
 
-// Image Gallery
-.gallery {
-  text-align: center;
-  background: $dark_grey;
-
-  div,
-  a,
-  img {
-    display: inline;
-    margin: 0 auto;
-  }
-
-}
-
-// Misc. styles
 .dropCap:first-letter {
   font-size: 1.3em;
   font-weight: bold;

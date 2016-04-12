@@ -64,3 +64,12 @@ dt {
 
 dd {
 }
+
+.inline {
+  list-style: none;
+  margin: auto;
+
+  li {
+    display: inline;
+  }
+}

@@ -19,27 +19,18 @@ $icon_size: 1.4em;
     padding: 0;
   }
 
-  &.horizontal,
-  &.vertical {
-    position: fixed;
-    margin: 0;
-  }
-
   .icon {
     width: $icon_size;
     height: $icon_size;
     margin: $icon_size * 0.2;
     padding: $icon_size * 0.2;
-    background-size: $icon_size;
     border: 1px solid $grey;
     border-radius: 50%;
+    background-size: $icon_size;
+    background-color: $light_grey;// $white;
 
-    &.social {
-      background-color: $light_grey;// $white;
-
-      &:hover {
-        background-color: $white;// $white;
-      }
+    &:hover {
+      background-color: $white;// $white;
     }
 
     @if($use_social_icons){
@@ -50,8 +41,19 @@ $icon_size: 1.4em;
         }
       }
     }
-
   }
+
+  &.horizontal,
+  &.vertical {
+    z-index: 10;
+    position: fixed;
+    margin: 0;
+
+    .icon {
+      border-radius: 0;
+    }
+  }
+
 }
 
 .jSocial.horizontal {
@@ -63,33 +65,22 @@ $icon_size: 1.4em;
     display: inline;
   }
 
-  .icon {
-    &.social {
-      background-color: $light_grey;// $white;
-
-      &:hover {
-        background-color: $white;// $white;
-      }
-    }
-  }
 }
 
 .jSocial.vertical {
-  top: 0;
+  top: $header_height;
   right: 0;
   width: $icon_size * 1.5;
   padding: $icon_size ($icon_size * 0.2);
 
+  .title {
+    position: absolute;
+    left: -999em;
+  }
   .icon {
     margin: auto;
-    &.social {
-      background-color: $light_grey;// $white;
-
-      &:hover {
-        background-color: $white;// $white;
-      }
-    }
   }
+
 }
 
 .jSocial-share {

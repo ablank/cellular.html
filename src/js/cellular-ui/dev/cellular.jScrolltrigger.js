@@ -1,13 +1,14 @@
 cellular.jScrolltrigger = function (opts) {
   var o = jQuery.extend({
-    "trigger": "bottom", // || 'top' || 'center' || 'inout'
-    "padding": "1em", // distance to allow before activating trigger
-  }, opts);
+    trigger: "bottom", // || 'top' || 'center' || 'inout'
+    padding: "1em" // distance to allow before activating trigger
+  }, opts),
+          fn = {};
 
-  var fn = {};
   fn.trigger = function () {
     jQuery(this).toggleClass(cellular.opts.activeclass);
   };
+
   return this.each(function () {
     var $w = jQuery(window);
     var w = {};
@@ -42,6 +43,6 @@ cellular.jScrolltrigger = function (opts) {
       }
     };
 
-    return trig[o.trigger];
+    trig[o.trigger];
   });
 };

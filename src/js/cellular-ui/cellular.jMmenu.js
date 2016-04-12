@@ -7,23 +7,43 @@ cellular.jMmenu = function (opts) {
     breakpoint: cellular.opts.breakpoint, // Window breakpoint trigger: 'mobile', 'narrow', 'default', 'large'
     parent: jQuery('body'), // Parent element used to attach menu
     cclass: "jMmenu", // Menu class to test
-    type: "slide", // Type of animation
-    direction: "right" // Direction of animation
+    triggertext: "Menu",
+    animateclass: "slide-right", // Type of animation
+    throttle: 101 // Time in ms to throttle window resize event
   }, opts),
-    fn = {};
+          fn = {};
 
   fn.mediaQuery = cellular.debounce(function ($obj, state) {
     if (o.breakpoint === cellular.state.breakpoint) {
-      var $menu = $obj.children([0]);
+      var $menu = $obj.children([0]),
+              label = null;
 
       state.mmenu = true;
-      o.parent.addClass(o.type + '-' + o.direction);
-      $menu.addClass(o.cclass)
-        .prependTo(o.parent);
+      o.parent.addClass(o.animateclass);
+      if (o.triggertext) {
+        label = '<span class="' + o.cclass + '-triggertext">' + o.triggertext + '</span>';
+      }
+      $obj.addClass(o.cclass + '-trigger')
+              .append(label);
 
-      fn.trigger($obj, state);
+      $menu.addClass(o.cclass + '-menu')
+              .prependTo(o.parent);
+    } else {
+      state.mmenu = false;
+      state.active = false;
+      o.parent.removeClass(
+              o.cclass + '-active ' +
+              o.cclass + '-inactive ' +
+              o.animateclass
+              );
+      $obj.attr('aria-label', "Menu")
+              .removeClass(o.cclass + '-trigger');
+      jQuery('.' + o.cclass + '-menu').removeClass(o.cclass + '-menu')
+              .prependTo($obj);
+      jQuery('.' + o.cclass + '-triggertext').remove();
     }
-  }, 500);
+    fn.trigger($obj, state);
+  }, o.throttle);
 
   fn.trigger = function ($obj, state) {
     var classes = [
@@ -32,23 +52,28 @@ cellular.jMmenu = function (opts) {
     ];
 
     if (state.active) {
-      $obj.activate();
+      $obj.activate()
+              .attr('aria-label', "Close Menu");
+      jQuery('.' + o.cclass + '-menu').addClass('active');
       o.parent.addClass(classes[0])
-        .removeClass(classes[1]);
-    }
-    else {
-      $obj.deactivate();
-      o.parent.addClass(classes[1])
-        .removeClass(classes[0]);
+              .removeClass(classes[1]);
+    } else {
+      $obj.deactivate()
+              .attr('aria-label', "Open Menu");
+      jQuery('.' + o.cclass + '-menu').removeClass('active');
+      if (state.mmenu) {
+        o.parent.addClass(classes[1])
+                .removeClass(classes[0]);
+      }
     }
   };
 
   fn.init = function () {
     var $obj = jQuery(this),
-      state = {
-        active: false,
-        mmenu: false
-      };
+            state = {
+              active: false,
+              mmenu: false
+            };
 
     fn.mediaQuery($obj, state);
 
@@ -57,8 +82,17 @@ cellular.jMmenu = function (opts) {
     });
 
     $obj.on('click', function () {
+      //console.log(this);
       if (state.mmenu) {
         state.active = state.active ? false : true;
+        fn.trigger($obj, state);
+      }
+    });
+
+    jQuery(document).on('keyup', function (e) {
+      if (state.active === true && e.which === 27) {
+        e.preventDefault();
+        state.active = false;
         fn.trigger($obj, state);
       }
     });

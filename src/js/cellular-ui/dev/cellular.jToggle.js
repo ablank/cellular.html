@@ -1,9 +1,9 @@
 cellular.jToggle = function (opts) {
   var o = jQuery.extend({
-    "max-height": 500,
-    "max-width": 500,
-    "easing": "swing",
-    "single": false
+    maxheight: 500,
+    maxwidth: 500,
+    easing: "swing",
+    single: false
   }, opts);
 
   var fn = {};
@@ -12,11 +12,11 @@ cellular.jToggle = function (opts) {
 
     if (o.single === true) {
       $li.siblings('.active').deactivate()
-        .find('.panel').slideUp(o.duration, o.easing);
+              .find('.panel').slideUp(o.duration, o.easing);
     }
 
     $li.activate()
-      .find('.panel').slideToggle(o.duration, o.easing);
+            .find('.panel').slideToggle(o.duration, o.easing);
   };
 
   return this.each(function () {

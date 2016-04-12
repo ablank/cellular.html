@@ -3,7 +3,7 @@ cellular.jSocial = function (opts) {
           page = $("link[rel='canonical']") ? $("link[rel='canonical']").attr('href') : window.location;
   var o = jQuery.extend({
     showshare: true,
-    showfollow: true,
+    showfollow: false,
     sharetitle: "Share this page",
     followtitle: "Follow Us",
     buttonclass: "social",
@@ -93,28 +93,40 @@ cellular.jSocial = function (opts) {
     $obj.once('jSocial', function () {
 
       if (o.showshare) {
-        var sWrap = $('<div class="jSocial-share" />');
+        var sWrap = $('<div class="jSocial-share" />'),
+                sharetitle = '';
 
         if (o.sharetitle.length !== 0) {
-          sWrap.append('<h3>' + o.sharetitle + '</h3>');
+          sWrap.append('<span class="title">' + o.sharetitle + '</span>');
+          sharetitle = o.sharetitle + ' on ';
         }
 
         o.share.map(function (i) {
-          sWrap.buttonize(o.sharelinks[i].url, o.sharetitle + ' on ' + o.sharelinks[i].title, [o.sharelinks[i].title.toLowerCase(), o.buttonclass, 'icon']);
+          sWrap.buttonize(o.sharelinks[i].url, sharetitle + o.sharelinks[i].title, [
+            o.sharelinks[i].title.toLowerCase(),
+            o.buttonclass,
+            'icon'
+          ]);
         });
 
         $obj.append(sWrap);
       }
 
       if (o.showfollow) {
-        var fWrap = $('<div class="jSocial-follow" />');
+        var fWrap = $('<div class="jSocial-follow" />'),
+                followtitle = '';
 
         if (o.followtitle.length !== 0) {
-          fWrap.append('<h3>' + o.followtitle + '</h3>');
+          fWrap.append('<span class="title">' + o.followtitle + '</span>');
+          followtitle = o.followtitle + ' on ';
         }
 
         $.each(o.follow, function () {
-          fWrap.buttonize(this.url, o.followtitle + ' on ' + this.title, [this.title.replace(/ /g, '').toLowerCase(), o.buttonclass, 'icon']);
+          fWrap.buttonize(this.url, followtitle + this.title, [
+            this.title.replace(/ /g, '').toLowerCase(),
+            o.buttonclass,
+            'icon'
+          ]);
         });
 
         $obj.append(fWrap);

@@ -3,6 +3,21 @@
  */
 
 /**
+ * Auto invoke
+ */
+(function () {
+  // Scroll to page anchors.
+  jQuery('a[href^="#"]').on('click', function (e) {
+    var target = jQuery(this).attr('href');
+
+    e.preventDefault();
+    jQuery('html, body').stop().animate({
+      scrollTop: jQuery(target).offset().top
+    }, 1500);
+  });
+})();
+
+/**
  * Get the breakpoints specified in CSS
  */
 cellular.breakpoint = function () {
@@ -113,52 +128,6 @@ cellular.transitionend = function () {
 };
 
 /**
- * Set state on window resize
- */
-cellular.windowstate = cellular.debounce(function () {
-  var ob = cellular.state.breakpoint;
-
-  cellular.state.breakpoint = cellular.breakpoint().type;
-  jQuery('body').removeClass(ob)
-          .addClass(cellular.state.breakpoint);
-}, 500);
-
-/**
- * Set state on document scroll
- */
-cellular.scrollstate = cellular.debounce(function (e, y) {
-  var el = jQuery('body'),
-          cclass = 'scrolled',
-          uc = cclass + '-up',
-          dc = cclass + '-down',
-          //y = cellular.state.scrolltop,
-          scrolltimeout = null;
-
-  cellular.state.scrolltop = $(document).scrollTop();
-  cellular.scrolltimer(el, uc, dc);
-  // Detect if page is scrolled
-  if (cellular.state.scrolltop < 5) {
-    el.removeClass(cclass);
-  } else {
-    el.addClass(cclass);
-  }
-  /*
-   // Detect scroll direction
-   if (cellular.state.scrolltop > y) { // scroll down
-   if (!el.hasClass(dc)) {
-   el.removeClass(uc)
-   .addClass(dc);
-   }
-   } else if (cellular.state.scrolltop < y) { // scroll up
-   if (!el.hasClass(uc)) {
-   el.removeClass(dc)
-   .addClass(uc);
-   }
-   }
-   */
-}, 0, true);
-
-/**
  * Reset scroll timer
  */
 cellular.scrolltimer = function (el, uc, dc) {
@@ -167,22 +136,6 @@ cellular.scrolltimer = function (el, uc, dc) {
     el.removeClass(uc + ' ' + dc);
   }, 2000);
 };
-
-/*
- cellular.autodimension = function ($obj, dimension) {
- return this.each(function () {
- var $t = jQuery(this),
- max = 0;
-
-
- if ($obj === 'auto') {
- $t.height(state.maxheight);
- } else {
- $t.height(o.size.height);
- }
- });
- };
- */
 
 /**
  *
@@ -200,4 +153,3 @@ cellular.buttonize = function (href, title, classes) {
 
   return $(this).append(btn);
 };
-

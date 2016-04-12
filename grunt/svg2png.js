@@ -7,18 +7,18 @@ module.exports = {
   images: {
     files: [
       {
-        cwd: 'src/assets/images/svg/',
+        cwd: 'src/assets/images/svg',
         src: ['*.svg'],
-        dest: 'assets/images/png/'
+        dest: 'assets/images/png'
       }
     ]
   },
   icons: {
     files: [
       {
-        cwd: 'src/assets/icons/svg/',
+        cwd: 'src/assets/icons/svg',
         src: ['*.svg'],
-        dest: 'assets/icons/png/'
+        dest: 'assets/icons/png'
       }
     ]
   }

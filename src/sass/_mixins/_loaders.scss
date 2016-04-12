@@ -28,7 +28,7 @@ $i_ease: linear;
     height: $size;
     z-index: 10;
     //margin: 0 ($size * .5);
-    
+
     @if $name == 'img' {
       background-image: url($url);
       background-repeat: no-repeat;

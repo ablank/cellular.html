@@ -8,7 +8,7 @@ cellular.jTabs = function (opts) {
     orient: "horizontal", // || "vertical"
     cclass: "jTabs"
   }, opts),
-    fn = {};
+          fn = {};
 
   /**
    *
@@ -17,13 +17,13 @@ cellular.jTabs = function (opts) {
    * @param object li
    */
   fn.showContent = function ($obj, li) {
-    var c = li.find('.content'),
-      pan = $obj.parent().find('.panel-content');
+    var content = li.find('.content'),
+            pan = $obj.parent().find('.panel-content');
 
     li.activate();
     pan.fadeOut('normal', function () {
-      jQuery(this).html(c.html())
-        .fadeIn('normal');
+      jQuery(this).html(content.html())
+              .fadeIn('normal');
     });
   };
 
@@ -32,29 +32,28 @@ cellular.jTabs = function (opts) {
    */
   fn.init = function () {
     var $obj = jQuery(this),
-      tab = $obj.find('> li'),
-      wrap = jQuery('<div/>').classify([
-      cellular.opts.cclass,
+            tab = $obj.find('> li'),
+            wrap = jQuery('<div/>').classify([
       o.orient,
       o.cclass + '-wrap'
     ]),
-      panel = '<div class="panel"><div class="panel-content" /></div>';
+            panel = '<div class="panel"><div class="panel-content" /></div>';
 
     $obj.once(o.cclass, function () {
 
       $obj.wrap(wrap)
-        .after(panel);
+              .after(panel);
 
       tab.each(function () {
         var li = jQuery(this);
 
         li.addClass('tab')
-          .kidWrap();
+                .kidWrap();
         //Set 1st child as title
         li.children().eq(0).addClass('title');
         //Set wrapper as content
         li.children().eq(1).addClass('content')
-          .hide();
+                .hide();
       });
     });
 

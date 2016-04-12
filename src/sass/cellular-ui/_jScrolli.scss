@@ -79,7 +79,7 @@ $width: 800px;
     bottom: 1em;
     left: 0;
     right: 0;
-    z-index: 10;
+    z-index: 2;
     padding: 0 2em;
     background-color: $black;
     background-color: rgba($black, 0.8);
@@ -99,15 +99,16 @@ $width: 800px;
   .control {
     cursor: pointer;
     position: absolute;
-    z-index: 11;
+    z-index: 3;
     text-indent: -999em;
     width: $controlsize;
     height: $controlsize;
     color: $white;
-    //background-size: $controlsize;
     background-repeat: no-repeat;
     background-image: url(../assets/icons/png/controls.png);
     background-image: url(../assets/icons/svg/controls.svg);
+    //background-size: $controlsize;
+    background-color: $grey;
     @include transition();
 
     &.prev,
@@ -209,8 +210,7 @@ $width: 800px;
     }
 
     .caption {
-      //max-height: none;
-      //opacity: 1;
+
     }
   }
 

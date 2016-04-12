@@ -5,6 +5,7 @@
 
 #content {
   z-index: 1;
+  background: $white;
 
   @if($header_position == 'absolute' OR 'fixed') {
     margin-top: $header_height;

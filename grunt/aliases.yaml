@@ -3,6 +3,7 @@ default:
     - 'concat'
     - 'compass'
     - 'autoprefixer'
+    - 'px_to_rem'
     - 'csscomb'
     - 'cssmin'
     - 'jshint:js'
@@ -17,5 +18,6 @@ dev:
 style:
     - 'compass'
     - 'autoprefixer'
+    - 'px_to_rem'
     - 'csscomb'
     - 'cssmin'

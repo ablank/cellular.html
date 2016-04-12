@@ -6,13 +6,18 @@
 .jTabs-wrap {
   display: block;
   clear: both;
-  margin: 0;
+  margin: auto;
   padding: 0;
+  width: 90%;
 
   .panel {
     clear: both;
     z-index: 1;
-    bottom: 1px;
+    padding: 1.4em 1em 1em;
+    bottom: $border_width;
+    background: $panel_background;
+    color: $panel_color;
+    border: $border_color 1px solid;
   }
 
   & > ul {
@@ -95,4 +100,3 @@
     }
   }
 }
-

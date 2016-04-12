@@ -4,18 +4,18 @@
  */
 
 module.exports = {
-    javascript: {
-        files: ['src/js/**/*'],
-        tasks: [
-            'concat',
-            'jshint'
-        ],
-        options: {
-            interrupt: false
-        }
-    },
-    stylesheets: {
-        files: ['src/sass/**/*'],
-        tasks: ['compass']
+  javascript: {
+    files: ['src/js/**/*'],
+    tasks: [
+      'concat',
+      'jshint'
+    ],
+    options: {
+      interrupt: false
     }
+  },
+  stylesheets: {
+    files: ['src/sass/**/*'],
+    tasks: ['compass', 'px_to_rem']
+  }
 };

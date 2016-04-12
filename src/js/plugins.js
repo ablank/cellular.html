@@ -3,15 +3,18 @@
  * Call javascript plugins used in theme.
  */
 
-(function ($) {
+(function($) {
   var plugins = {
     cellularui: {
       jAccordion: true,
-      jBlocklink: true,
+      jCard: true,
       jMmenu: true,
-      jTabs: true,
+      jModal: true,
       jScrolli: true,
-      jSocial: true
+      jSocial: true,
+      jTabs: true,
+      jTooltip: true,
+      jZoom: true
     },
     backstretch: false,
     flowtype: false,
@@ -30,9 +33,9 @@
     });
   }
 
-  if (plugins.cellularui.jBlocklink === true) {
-    $('.jBlocklink').jBlocklink({
-      cclass: "jBlocklink-link" // Class to add to wrapper link for styling.
+  if (plugins.cellularui.jCard === true) {
+    $('.jCard, .card').jCard({
+      cclass: "jCard"
     });
   }
 
@@ -40,11 +43,15 @@
     $('#nav').jMmenu({
       // Window breakpoint trigger:
       // "breakpoint": cellular.opts.breakpoint, // "mobile"
-      cclass: "jMmenu", // default
+      cclass: "jMmenu", // default class added to menu.
       // Classes added for styling- CSS classes control position & animation.
       // <element class="$type-$direction">
-      type: "push",
-      direction: "down"
+      animateclass: "slide-down",
+    });
+  }
+  if (plugins.cellularui.jModal === true) {
+    $('.jCard').jCard({
+      cclass: "jCard"
     });
   }
 
@@ -96,7 +103,7 @@
   if (plugins.cellularui.jSocial === true) {
     $('.jSocial').jSocial({
       showshare: true,
-      showfollow: true,
+      showfollow: false,
       sharetitle: "Share this page",
       followtitle: "Follow Us",
       buttonclass: "social",
@@ -134,6 +141,13 @@
         }
       }
     });
+  }
+
+  if (plugins.cellularui.jTooltip === true) {
+    $('[data-tooltip]').jTooltip();
+  }
+  if (plugins.cellularui.jZoom === true) {
+    $('.jZoom').jZoom();
   }
 
   // Backstretch functions.

@@ -15,14 +15,14 @@ cellular.jSticky = function (opts) {
 
     if (scroll >= offset) {
       $obj.addClass("mini")
-        .css({
-          "position": "absolute",
-          "left": $obj.offset().left
-        })
-        .stop().animate({
+              .css({
+                "position": "absolute",
+                "left": $obj.offset().left
+              })
+              .stop().animate({
         "top": scroll
       })
-        .minimenu();
+              .minimenu();
 
     } else {
       $obj.removeClass("mini");
